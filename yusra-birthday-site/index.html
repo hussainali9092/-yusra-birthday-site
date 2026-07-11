@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meri Jaan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #171b26;
+    --ink-soft: #232838;
+    --cream: #f7f0e4;
+    --cream-soft: #faf6ef;
+    --rose: #b8433f;
+    --rose-soft: #d67a68;
+    --gold: #c9a961;
+    --gold-dim: #a3894f;
+    --line: rgba(201, 169, 97, 0.28);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    background: var(--ink);
+    color: var(--cream-soft);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+
+  .serif { font-family: 'Cormorant Garamond', serif; }
+
+  ::selection { background: var(--rose); color: var(--cream-soft); }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  /* ============ TEXTURE ============ */
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 22%;
+    filter: saturate(0.92) brightness(0.72);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(23,27,38,0.15) 0%, rgba(23,27,38,0.25) 45%, rgba(23,27,38,0.96) 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 6vw 7vh;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+    margin-bottom: 1.4rem;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(2.8rem, 9vw, 6.4rem);
+    line-height: 1.02;
+    color: var(--cream-soft);
+    opacity: 0;
+    animation: fadeUp 1.1s ease 0.55s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--rose-soft);
+  }
+
+  .hero-sub {
+    margin-top: 1.6rem;
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeUp 1.1s ease 0.85s forwards;
+    max-width: 34ch;
+    margin-left: auto;
+    margin-right: auto;
+    letter-spacing: 0.01em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 2.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 1px;
+    height: 46px;
+    background: linear-gradient(180deg, transparent, var(--gold) 60%, transparent);
+    opacity: 0;
+    animation: fadeUp 1s ease 1.3s forwards, pulse 2.4s ease-in-out 2.3s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 0.35; } 50% { opacity: 0.9; } }
+
+  /* ============ SECTION SHELL ============ */
+  section { position: relative; padding: 7rem 6vw; }
+  .section-inner { max-width: 920px; margin: 0 auto; }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.2rem;
+    justify-content: center;
+  }
+  .kicker::before, .kicker::after {
+    content: '';
+    height: 1px;
+    width: 28px;
+    background: var(--line);
+  }
+  .kicker span {
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+    text-align: center;
+    color: var(--cream-soft);
+    margin-bottom: 3.6rem;
+  }
+  .section-title em { font-style: italic; color: var(--rose-soft); }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(.2,.7,.3,1), transform 0.9s cubic-bezier(.2,.7,.3,1);
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ============ GALLERY (scrapbook) ============ */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.1rem;
+    margin-top: 1rem;
+  }
+  .g-item {
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--ink-soft);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.4);
+  }
+  .g-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s ease;
+  }
+  .g-item:hover img { transform: scale(1.045); }
+
+  .g-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px rgba(247,240,228,0.06);
+    pointer-events: none;
+  }
+
+  .g1 { grid-column: span 3; grid-row: span 2; }
+  .g2 { grid-column: span 3; grid-row: span 1; }
+  .g3 { grid-column: span 3; grid-row: span 1; }
+  .g4 { grid-column: span 2; grid-row: span 2; }
+  .g5 { grid-column: span 2; grid-row: span 2; }
+  .g6 { grid-column: span 2; grid-row: span 2; }
+  .g7 { grid-column: span 4; grid-row: span 1; }
+  .g8 { grid-column: span 2; grid-row: span 1; }
+
+  .g-item:nth-child(2n) { transform: rotate(-0.6deg); }
+  .g-item:nth-child(3n) { transform: rotate(0.5deg); }
+
+  @media (max-width: 720px) {
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .g1,.g2,.g3,.g4,.g5,.g6,.g7,.g8 { grid-column: span 1; grid-row: span 1; }
+    .g1 { grid-column: span 2; }
+    .g-item { aspect-ratio: 4/5; }
+    .g-item:nth-child(n) { transform: none; }
+  }
+
+  /* ============ LETTER ============ */
+  .letter-wrap {
+    background: var(--cream-soft);
+    color: var(--ink);
+    border-radius: 4px;
+    padding: clamp(2.2rem, 6vw, 5rem);
+    position: relative;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.45);
+  }
+  .letter-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    border-radius: 4px 4px 0 0;
+  }
+  .letter-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--rose);
+    font-size: 1.05rem;
+    text-align: center;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .letter-to {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    text-align: center;
+    margin-bottom: 2.4rem;
+    color: var(--ink);
+  }
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    line-height: 1.75;
+    color: #2a2620;
+  }
+  .letter-body p { margin-bottom: 1.4rem; }
+  .letter-body p:last-of-type { margin-bottom: 0; }
+  .letter-sign {
+    margin-top: 2.6rem;
+    text-align: right;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--rose);
+  }
+  .letter-sign span { display: block; font-size: 0.85rem; font-style: normal; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dim); margin-top: 0.3rem; }
+
+  /* ============ TIMELINE ============ */
+  .timeline {
+    position: relative;
+    margin-top: 2rem;
+  }
+  .timeline-thread {
+    position: absolute;
+    left: 21px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--gold) 0%, var(--rose) 50%, var(--gold) 100%);
+    opacity: 0.6;
+  }
+  .t-item {
+    position: relative;
+    padding-left: 64px;
+    padding-bottom: 3.4rem;
+  }
+  .t-item:last-child { padding-bottom: 0; }
+  .t-dot {
+    position: absolute;
+    left: 12px;
+    top: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 0 5px var(--ink), 0 0 18px rgba(201,169,97,0.35);
+  }
+  .t-dot::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--rose);
+  }
+  .t-date {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .t-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--cream-soft);
+    margin-bottom: 0.6rem;
+  }
+  .t-title em { font-style: italic; color: var(--rose-soft); }
+  .t-desc {
+    font-size: 0.98rem;
+    color: rgba(247,240,228,0.72);
+    max-width: 52ch;
+    line-height: 1.65;
+  }
+
+  /* ============ FUN FACTS ============ */
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.4rem;
+    margin-top: 1rem;
+  }
+  .fact-card {
+    background: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 2rem 1.7rem;
+    position: relative;
+    transition: transform 0.4s ease, border-color 0.4s ease;
+  }
+  .fact-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold);
+  }
+  .fact-icon {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 2.6rem;
+    color: var(--rose-soft);
+    line-height: 1;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .fact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    color: var(--cream-soft);
+    margin-bottom: 0.55rem;
+  }
+  .fact-desc {
+    font-size: 0.92rem;
+    color: rgba(247,240,228,0.65);
+    line-height: 1.6;
+  }
+
+  /* ============ NICKNAMES STRIP ============ */
+  .names-strip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.9rem 1.1rem;
+    margin-top: 2.6rem;
+  }
+  .name-pill {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--cream);
+    border: 1px solid var(--line);
+    padding: 0.6rem 1.5rem;
+    border-radius: 999px;
+    background: rgba(201,169,97,0.05);
+  }
+
+  /* ============ CLOSING ============ */
+  .closing {
+    text-align: center;
+    padding-bottom: 9rem;
+  }
+  .closing-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 3.6vw, 2.3rem);
+    color: var(--cream-soft);
+    max-width: 22ch;
+    margin: 0 auto 2rem;
+    line-height: 1.5;
+  }
+  .closing-line em { color: var(--rose-soft); }
+  .closing-from {
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  @media (max-width: 560px) {
+    section { padding: 4.5rem 5.5vw; }
+    .letter-wrap { padding: 2rem 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <img class="hero-img" src="images/IMG_1523.jpeg" alt="Hussain and Yusra Mehreen embracing">
+  <div class="hero-content">
+    <div class="hero-eyebrow">a little late, but made with you in mind</div>
+    <h1 class="hero-title">Happy Birthday,<br><em>Yusra Mehreen</em></h1>
+    <p class="hero-sub">Nineteen looks beautiful on you, meri jaan.</p>
+  </div>
+  <div class="scroll-cue"></div>
+</section>
+
+<!-- GALLERY -->
+<section>
+  <div class="section-inner">
+    <div class="kicker reveal"><span>In Frames</span></div>
+    <h2 class="section-title reveal">Some of my <em>favourite</em> moments</h2>
+    <div class="gallery reveal">
+      <div class="g-item g1"><img src="images/IMG_1093.jpeg" alt="Hussain and Yusra at a restaurant with flowers and gifts"></div>
+      <div class="g-item g2"><img src="images/IMG_5584.jpeg" alt="Hussain and Yusra hugging in traditional outfits"></div>
+      <div class="g-item g3"><img src="images/IMG_9098.jpeg" alt="Hussain and Yusra taking a mirror selfie"></div>
+      <div class="g-item g4"><img src="images/0CD3F37A-63B7-4ACA-894F-9E0897554CCD.jpeg" alt="Hussain and Yusra laughing together outdoors"></div>
+      <div class="g-item g5"><img src="images/IMG_4683.jpeg" alt="Hussain and Yusra embracing at golden hour"></div>
+      <div class="g-item g6"><img src="images/IMG_7739.jpeg" alt="Hussain and Yusra dressed up at an evening event"></div>
+      <div class="g-item g7"><img src="images/IMG_6887.jpeg" alt="Hussain and Yusra sharing a quiet moment"></div>
+      <div class="g-item g8"><img src="images/0A63A7ED-14D8-4CA7-AF5F-56EBC6DCEB29.jpeg" alt="Close up of Yusra with mehndi covering a smile"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section>
+  <div class="section-inner">
+    <div class="kicker reveal"><span>Our Story</span></div>
+    <h2 class="section-title reveal">How we <em>found</em> each other</h2>
+    <div class="timeline reveal">
+      <div class="timeline-thread"></div>
+
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-date">25 February 2024</div>
+        <div class="t-title">The day we <em>met</em></div>
+        <div class="t-desc">Just two people crossing paths — neither of us had any idea what it would turn into.</div>
+      </div>
+
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-date">5 January 2025</div>
+        <div class="t-title">The day it became <em>us</em></div>
+        <div class="t-desc">Honestly? I heard you'd gone out with someone else and I couldn't handle it — turns out that was all the confirmation I needed. So I told you exactly how I felt. Not the smoothest origin story, but it's ours, and I wouldn't trade it for a more polished one.</div>
+      </div>
+
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-date">Every day since</div>
+        <div class="t-title">Choosing you, <em>again and again</em></div>
+        <div class="t-desc">We've had our rough patches, time apart, moments I wish I'd handled better. But every single time, I've ended up right back here — grateful, a little amazed, and more sure than ever that this is where I'm supposed to be.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUN FACTS -->
+<section>
+  <div class="section-inner">
+    <div class="kicker reveal"><span>Just Us</span></div>
+    <h2 class="section-title reveal">Things that are <em>so</em> you</h2>
+
+    <div class="facts-grid reveal">
+      <div class="fact-card">
+        <span class="fact-icon">"</span>
+        <div class="fact-title">The Hitt Thing</div>
+        <div class="fact-desc">You will bring up "hitt" completely out of nowhere — mid-conversation, no context, no warning. I've stopped questioning it. It's just a Yusra Mehreen special now.</div>
+      </div>
+      <div class="fact-card">
+        <span class="fact-icon">♡</span>
+        <div class="fact-title">Splitsvillian For Life</div>
+        <div class="fact-desc">Splitsvilla could be playing in the background of literally any moment and you will drop everything to watch. No further questions.</div>
+      </div>
+      <div class="fact-card">
+        <span class="fact-icon">✦</span>
+        <div class="fact-title">More Than "Hitt"</div>
+        <div class="fact-desc">I say it all the time, but I genuinely love you more than you love hitt — and given how often that word comes out of your mouth, that's saying something.</div>
+      </div>
+    </div>
+
+    <div class="names-strip reveal">
+      <span class="name-pill">Guddi Papa</span>
+      <span class="name-pill">Splitsvillian</span>
+      <span class="name-pill">Yussu</span>
+      <span class="name-pill">Meri Jaan</span>
+    </div>
+  </div>
+</section>
+
+<!-- LETTER -->
+<section>
+  <div class="section-inner">
+    <div class="kicker reveal"><span>For You</span></div>
+    <h2 class="section-title reveal">A letter, <em>belated</em></h2>
+
+    <div class="letter-wrap reveal">
+      <div class="letter-mark">meri jaan,</div>
+      <div class="letter-to">Happy 19th Birthday</div>
+      <div class="letter-body">
+        <p>I know this is landing a day late, but I wanted to give you something I actually took my time on — not something rushed out at midnight. You deserve that much and more.</p>
+        <p>Nineteen is a good look on you. Every year I think you can't possibly become more you, and every year I'm wrong. You've grown into someone kind, funny, a little chaotic in the best way, and endlessly warm to everyone lucky enough to know you — and I get to be one of those people every single day.</p>
+        <p>I think about how we started more than you'd probably guess. Not the smoothest beginning — I got jealous, I said what I was feeling, and somehow that turned into this. Into us. I've never once regretted saying it out loud that day.</p>
+        <p>We haven't had a perfectly straight road. There were stretches where things fell apart, time we spent without each other, and I won't pretend that didn't hurt. But every time, without fail, I've found my way back to you — and I don't think that's an accident. I think that's just what it looks like when something is actually right.</p>
+        <p>You say "hitt" for absolutely no reason, at the most random times, and it makes no sense and I love it anyway. You'll drop anything for a Splitsvilla episode. You're Guddi Papa and Yussu and Splitsvillian and meri jaan, all at once, and somehow all of those are exactly you.</p>
+        <p>So — happy belated birthday. Here's to nineteen being good to you, and to me getting to keep choosing you, one ordinary day at a time.</p>
+      </div>
+      <div class="letter-sign">Hussain<span>always yours</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="section-inner">
+    <p class="closing-line reveal">I loved you yesterday.<br>I love you <em>today</em>.<br>I'll love you tomorrow.</p>
+    <div class="closing-from reveal">— Hussain</div>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
